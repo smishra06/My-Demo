@@ -83,7 +83,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Publish
-      uses: actions/hello-world-javascript-action@v1
       run: |
         echo "Running publish step"
       
