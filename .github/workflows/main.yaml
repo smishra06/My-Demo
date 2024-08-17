@@ -1,0 +1,89 @@
+name: Build MyDemo
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14.x'
+    - name: Build
+      run: |
+        echo "Running build step"
+        npm install
+        npm run build
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: dist
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14.x'
+    - name: Test
+      run: |
+        echo "Running test step"
+        npm install
+        npm test
+
+  cequence-api-tests:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Login to GitLab Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: registry.gitlab.com
+        username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+        password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+    - name: Run Cequence API Tests
+      run: |
+        docker version
+        docker pull registry.gitlab.com/cequence/releases/api-testing/fury-runner:1.5.1
+        docker run \
+          -e CQ_TEST_PLAN_ID="yQ-5YZEBic0S9-_MAQOU" \
+          -e CQ_UAP_BASE_HOST="uap.1.cequence.cloud" \
+          -e CQ_UAP_CLIENT_ID="cicd-test" \
+          -e CQ_UAP_CLIENT_SECRET="${{ secrets.CQ_UAP_CLIENT_SECRET }}" \
+          -e CQ_TEST_TARGET_SERVER="https://api.emadisonisland.com" \
+          -e CQ_TEST_PLAN_BUNDLE_MODE=CEQUENCE \
+          -e CQ_TEST_RUN_CICD_LINK="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+          registry.gitlab.com/cequence/releases/api-testing/fury-runner:1.5.1 > results_output.log 2>&1
+        cat results_output.log
+        if grep -q "Test run result = FAIL" results_output.log; then
+          echo "Cequence tests failed. Failing the pipeline."
+          exit 1
+        else
+          echo "Cequence tests passed."
+        fi
+
+  publish:
+    needs: cequence-api-tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1  # Change this to your AWS region
+    - name: Publish
+      run: |
+        echo "Running publish step"
+      
+
