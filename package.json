@@ -1,0 +1,21 @@
+{
+    "name": "my-demo",
+    "version": "1.0.0",
+    "description": "A sample project for Bitbucket Pipelines",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js",
+      "build": "echo 'Building project...' && mkdir -p dist && echo 'Built!' > dist/output.txt",
+      "test": "echo 'Running tests...' && exit 0",
+      "lint": "echo 'Linting code...' && exit 0"
+    },
+    "keywords": ["sample", "bitbucket", "pipelines"],
+    "author": "Shailesh Mishra",
+    "dependencies": {
+      "express": "^4.17.1"
+    },
+    "devDependencies": {
+      "jest": "^27.0.6",
+      "eslint": "^7.32.0"
+    }
+  }
