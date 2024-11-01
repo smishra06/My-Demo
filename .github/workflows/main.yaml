@@ -58,7 +58,7 @@ jobs:
         docker version
         docker pull registry.gitlab.com/cequence/releases/api-testing/fury-runner:1.5.1
         docker run \
-          -e CQ_TEST_PLAN_ID="taLVwZEBzfFzWdJXGBNu" \
+          -e CQ_TEST_PLAN_ID="9pGu6JIB1RzLet4EL2p8" \
           -e CQ_UAP_BASE_HOST="uapnotvalid.1.cequence.cloud" \
           -e CQ_UAP_AUTH_URL="https://auth.cequence-internal.1.cequence.cloud/auth/realms/cequence/protocol/openid-connect/token" \
           -e CQ_UAP_API_URL="https://api.cequence-internal.1.cequence.cloud" \
