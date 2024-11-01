@@ -26,11 +26,7 @@ jobs:
         echo "Running build step"
         npm install
         npm run build
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: dist
-        path: dist
+
 
   test:
     needs: build
@@ -71,6 +67,7 @@ jobs:
           -e CQ_UAP_CLIENT_SECRET="${{ secrets.CQ_UAP_CLIENT_SECRET }}" \
           -e CQ_TEST_TARGET_SERVER="https://api.emadisonisland.com" \
           -e CQ_TEST_PLAN_BUNDLE_MODE=CEQUENCE \
+          -e CQ_LOG_LEVEL="DEBUG" \
           -e CQ_TEST_RUN_CICD_LINK="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
           registry.gitlab.com/cequence/releases/api-testing/fury-runner:1.5.1 > results_output.log 2>&1
         cat results_output.log
