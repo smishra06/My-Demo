@@ -61,7 +61,7 @@ jobs:
           -e CQ_TEST_PLAN_ID="9pGu6JIB1RzLet4EL2p8" \
           -e CQ_UAP_BASE_HOST="uapnotvalid.1.cequence.cloud" \
           -e CQ_UAP_AUTH_URL="https://auth.cequence-internal.1.cequence.cloud/auth/realms/cequence/protocol/openid-connect/token" \
-          -e CQ_UAP_API_URL="https://api.cequence-internal.1.cequence.cloud" \
+          -e CQ_UAP_API_HOST="https://api.cequence-internal.1.cequence.cloud" \
           -e CQ_UAP_EDGE_URL="https://edge.cequence-internal.1.cequence.cloud" \
           -e CQ_UAP_CLIENT_ID="cicd-test" \
           -e CQ_UAP_CLIENT_SECRET="ObXLsBgUZm7DWLFMmyXG2Pq8VFdAvChj" \
