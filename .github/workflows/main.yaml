@@ -62,8 +62,11 @@ jobs:
         docker version
         docker pull registry.gitlab.com/cequence/releases/api-testing/fury-runner:1.5.1
         docker run \
-          -e CQ_TEST_PLAN_ID="yQ-5YZEBic0S9-_MAQOU" \
-          -e CQ_UAP_BASE_HOST="uap.1.cequence.cloud" \
+          -e CQ_TEST_PLAN_ID="taLVwZEBzfFzWdJXGBNu" \
+          -e CQ_UAP_BASE_HOST="uapnotvalid.1.cequence.cloud" \
+          -e CQ_UAP_AUTH_URL="https://auth.cequence-internal.1.cequence.cloud/auth/realms/cequence/protocol/openid-connect/token" \
+          -e CQ_UAP_API_URL="https://api.cequence-internal.1.cequence.cloud" \
+          -e CQ_UAP_EDGE_URL="https://edge.cequence-internal.1.cequence.cloud" \
           -e CQ_UAP_CLIENT_ID="cicd-test" \
           -e CQ_UAP_CLIENT_SECRET="${{ secrets.CQ_UAP_CLIENT_SECRET }}" \
           -e CQ_TEST_TARGET_SERVER="https://api.emadisonisland.com" \
